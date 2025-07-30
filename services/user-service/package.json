@@ -1,0 +1,33 @@
+{
+  "name": "user-service",
+  "version": "1.0.0",
+  "description": "User management microservice",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "bcryptjs": "^2.4.3",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.3",
+    "cors": "^2.8.5",
+    "helmet": "^6.1.5",
+    "express-rate-limit": "^6.7.0",
+    "prom-client": "^14.2.0",
+    "winston": "^3.8.2",
+    "joi": "^17.9.1",
+    "dotenv": "^16.0.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.22",
+    "jest": "^29.5.0",
+    "supertest": "^6.3.3"
+  },
+  "keywords": ["microservice", "user", "authentication", "cloud-native"],
+  "author": "Cloud Native Team",
+  "license": "MIT"
+}
