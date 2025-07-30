@@ -1,0 +1,73 @@
+version: '3.8'
+
+services:
+  # User Service
+  user-service:
+    build: ./services/user-service
+    container_name: user-service
+    ports:
+      - "3001:3001"
+    environment:
+      - PORT=3001
+      - MONGODB_URI=mongodb://admin:password@mongodb:27017/users?authSource=admin
+      - JWT_SECRET=your-secret-key-here
+      - NODE_ENV=production
+    depends_on:
+      - mongodb
+    volumes:
+      - ./services/user-service/logs:/app/logs
+    networks:
+      - cloud-native-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "node", "healthcheck.js"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Product Service
+  product-service:
+    build: ./services/product-service
+    container_name: product-service
+    ports:
+      - "3002:3002"
+    environment:
+      - PORT=3002
+      - MONGODB_URI=mongodb://admin:password@mongodb:27017/products?authSource=admin
+      - ENVIRONMENT=production
+    depends_on:
+      - mongodb
+    networks:
+      - cloud-native-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "healthcheck.py"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Order Service
+  order-service:
+    build: ./services/order-service
+    container_name: order-service
+    ports:
+      - "3003:3003"
+    environment:
+      - PORT=3003
+      - MONGODB_URI=mongodb://admin:password@mongodb:27017/orders?authSource=admin
+      - JWT_SECRET=your-secret-key-here
+      - GIN_MODE=release
+    depends_on:
+      - mongodb
+    networks:
+      - cloud-native-network
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+networks:
+  cloud-native-network:
+    external: true
