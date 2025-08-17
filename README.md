@@ -149,6 +149,8 @@ docker-compose -f docker-compose.test.yml up --abort-on-container-exit
 k6 run tests/load/api-load-test.js
 ```
 
+
+
 ## Security
 
 - JWT-based authentication
