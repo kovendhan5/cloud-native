@@ -48,7 +48,7 @@ docker-compose -f docker-compose.infrastructure.yml up -d
 # User Service
 cd services/user-service && npm install
 
-# Product Service
+# Product Service   
 cd services/product-service && pip install -r requirements.txt
 
 # Order Service
