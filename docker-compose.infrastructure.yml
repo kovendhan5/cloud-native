@@ -94,6 +94,8 @@ services:
 
 networks:
   cloud-native-network:
+    # Explicit name so other compose files can reference the same network
+    name: cloud-native-network
     driver: bridge
 
 volumes:

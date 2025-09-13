@@ -34,8 +34,3 @@ scrape_configs:
       - targets: ['kong:8001']
     metrics_path: '/metrics'
     scrape_interval: 15s
-
-  - job_name: 'node-exporter'
-    static_configs:
-      - targets: ['node-exporter:9100']
-    scrape_interval: 15s
