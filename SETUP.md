@@ -39,16 +39,18 @@ GIN_MODE=debug
 ### Development Mode
 
 1. **Start infrastructure services:**
+
 ```bash
 docker-compose -f docker-compose.infrastructure.yml up -d
 ```
 
 2. **Install dependencies:**
+
 ```bash
 # User Service
 cd services/user-service && npm install
 
-# Product Service   
+# Product Service
 cd services/product-service && pip install -r requirements.txt
 
 # Order Service
@@ -56,6 +58,7 @@ cd services/order-service && go mod download
 ```
 
 3. **Run services locally:**
+
 ```bash
 # Terminal 1 - User Service
 cd services/user-service && npm run dev
@@ -70,12 +73,14 @@ cd services/order-service && go run main.go
 ### Production Mode (Docker)
 
 1. **Start all services:**
+
 ```bash
 docker-compose -f docker-compose.infrastructure.yml up -d
 docker-compose up -d
 ```
 
 2. **Check service health:**
+
 ```bash
 curl http://localhost:3001/health  # User Service
 curl http://localhost:3002/health  # Product Service
@@ -85,16 +90,19 @@ curl http://localhost:3003/health  # Order Service
 ### Kubernetes Deployment
 
 1. **Create namespace and secrets:**
+
 ```bash
 kubectl apply -f k8s/secrets.yaml
 ```
 
 2. **Deploy database:**
+
 ```bash
 kubectl apply -f k8s/mongodb.yaml
 ```
 
 3. **Deploy services:**
+
 ```bash
 kubectl apply -f k8s/user-service.yaml
 kubectl apply -f k8s/product-service.yaml
@@ -102,6 +110,7 @@ kubectl apply -f k8s/order-service.yaml
 ```
 
 4. **Check deployment:**
+
 ```bash
 kubectl get pods -n cloud-native
 kubectl get services -n cloud-native
@@ -191,20 +200,24 @@ curl -X PUT http://localhost:8000/api/orders/ORDER_ID/status \
 ## Monitoring and Observability
 
 ### Prometheus Metrics
+
 - **User Service**: http://localhost:3001/metrics
 - **Product Service**: http://localhost:3002/metrics
 - **Order Service**: http://localhost:3003/metrics
 - **Prometheus UI**: http://localhost:9090
 
 ### Grafana Dashboards
+
 - **URL**: http://localhost:3000
 - **Username**: admin
 - **Password**: admin
 
 ### Jaeger Tracing
+
 - **URL**: http://localhost:16686
 
 ### Kong Admin API
+
 - **URL**: http://localhost:8001
 
 ## Troubleshooting
@@ -212,14 +225,17 @@ curl -X PUT http://localhost:8000/api/orders/ORDER_ID/status \
 ### Common Issues
 
 1. **Port conflicts:**
+
    - Check if ports are already in use: `netstat -an | findstr "3001"`
    - Stop conflicting services or change ports
 
 2. **Database connection errors:**
+
    - Ensure MongoDB is running: `docker-compose ps`
    - Check connection string in environment variables
 
 3. **JWT token issues:**
+
    - Ensure JWT_SECRET is set consistently across services
    - Check token expiration time
 
