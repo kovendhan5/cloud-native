@@ -5,6 +5,7 @@ A modern cloud-native microservices application built with containerization, API
 ## Architecture
 
 This application demonstrates cloud-native principles including:
+
 - **Microservices Architecture**: Loosely coupled services
 - **Containerization**: Docker containers for all services
 - **API Gateway**: Centralized API management with Kong
@@ -19,21 +20,25 @@ This application demonstrates cloud-native principles including:
 ## Services
 
 ### 1. User Service (Node.js)
+
 - User registration and authentication
 - JWT token management
 - User profile management
 
 ### 2. Product Service (Python FastAPI)
+
 - Product catalog management
 - Inventory tracking
 - Search functionality
 
 ### 3. Order Service (Go)
+
 - Order processing
 - Payment integration
 - Order status tracking
 
 ### 4. API Gateway (Kong)
+
 - Request routing
 - Rate limiting
 - Authentication
@@ -42,6 +47,7 @@ This application demonstrates cloud-native principles including:
 ## Quick Start
 
 ### Prerequisites
+
 - Docker & Docker Compose
 - Node.js 18+
 - Python 3.9+
@@ -50,22 +56,26 @@ This application demonstrates cloud-native principles including:
 ### Development Setup
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/kovendhan5/cloud-native.git
 cd cloud-native
 ```
 
 2. Start the infrastructure services:
+
 ```bash
 docker-compose -f docker-compose.infrastructure.yml up -d
 ```
 
 3. Start the application services:
+
 ```bash
 docker-compose up -d
 ```
 
 4. Access the services:
+
 - API Gateway: http://localhost:8000
 - User Service: http://localhost:3001
 - Product Service: http://localhost:3002
@@ -77,12 +87,14 @@ docker-compose up -d
 ## API Documentation
 
 ### User Service Endpoints
+
 - `POST /api/users/register` - Register new user
 - `POST /api/users/login` - User login
 - `GET /api/users/profile` - Get user profile
 - `PUT /api/users/profile` - Update user profile
 
 ### Product Service Endpoints
+
 - `GET /api/products` - List all products
 - `GET /api/products/{id}` - Get product by ID
 - `POST /api/products` - Create new product
@@ -90,6 +102,7 @@ docker-compose up -d
 - `DELETE /api/products/{id}` - Delete product
 
 ### Order Service Endpoints
+
 - `POST /api/orders` - Create new order
 - `GET /api/orders/{id}` - Get order by ID
 - `GET /api/orders/user/{userId}` - Get user orders
@@ -98,16 +111,19 @@ docker-compose up -d
 ## Monitoring and Observability
 
 ### Metrics
+
 - Application metrics exposed on `/metrics` endpoint
 - Custom business metrics
 - Infrastructure metrics via Prometheus
 
 ### Logging
+
 - Structured JSON logging
 - Centralized log aggregation
 - Log correlation with trace IDs
 
 ### Tracing
+
 - Distributed tracing with Jaeger
 - Request correlation across services
 - Performance monitoring
@@ -115,11 +131,13 @@ docker-compose up -d
 ## Deployment
 
 ### Kubernetes
+
 ```bash
 kubectl apply -f k8s/
 ```
 
 ### Cloud Platforms
+
 - AWS EKS deployment scripts in `deploy/aws/`
 - Azure AKS deployment scripts in `deploy/azure/`
 - GCP GKE deployment scripts in `deploy/gcp/`
@@ -127,11 +145,12 @@ kubectl apply -f k8s/
 ## Testing
 
 ### Unit Tests
+
 ```bash
 # User Service
 cd services/user-service && npm test
 
-# Product Service  
+# Product Service
 cd services/product-service && python -m pytest
 
 # Order Service
@@ -139,17 +158,17 @@ cd services/order-service && go test ./...
 ```
 
 ### Integration Tests
+
 ```bash
 docker-compose -f docker-compose.test.yml up --abort-on-container-exit
 ```
 
 ### Load Testing
+
 ```bash
 # Using k6
 k6 run tests/load/api-load-test.js
 ```
-
-
 
 ## Security
 
@@ -200,6 +219,7 @@ docker compose logs -f --tail=50
 ```
 
 ### Health Checks
+
 ```cmd
 curl http://localhost:3001/health
 curl http://localhost:3002/health
@@ -208,14 +228,16 @@ curl http://localhost:8000/api/users/health
 ```
 
 ### Observability UIs
-| Component   | URL                       |
-|-------------|---------------------------|
-| Prometheus  | http://localhost:9090     |
-| Grafana     | http://localhost:3000     |
-| Jaeger      | http://localhost:16686    |
-| Kong Admin  | http://localhost:8001     |
+
+| Component  | URL                    |
+| ---------- | ---------------------- |
+| Prometheus | http://localhost:9090  |
+| Grafana    | http://localhost:3000  |
+| Jaeger     | http://localhost:16686 |
+| Kong Admin | http://localhost:8001  |
 
 ### Tear Down
+
 ```cmd
 docker compose down
 docker compose -f docker-compose.infrastructure.yml down
@@ -223,26 +245,29 @@ docker compose -f docker-compose.infrastructure.yml down
 
 ## Troubleshooting (Windows)
 
-| Symptom | Cause | Fix |
-|---------|-------|-----|
-| `open //./pipe/dockerDesktopLinuxEngine` | Docker engine not started | Launch Docker Desktop and wait until running |
-| Healthcheck failing for order-service | `wget` missing (fixed) | Rebuild image: `docker compose build order-service` |
-| `port already allocated` | Port in use | `netstat -ano | findstr :3001` then `taskkill /PID <pid> /F` |
-| Mongo auth errors | Wrong URI or authSource missing | Use `mongodb://admin:password@mongodb:27017/<db>?authSource=admin` |
-| Kong route 404 | Path mismatch | Check `infrastructure/kong.yml` paths and container logs |
+| Symptom                                  | Cause                           | Fix                                                                |
+| ---------------------------------------- | ------------------------------- | ------------------------------------------------------------------ | ------------------------------------------ |
+| `open //./pipe/dockerDesktopLinuxEngine` | Docker engine not started       | Launch Docker Desktop and wait until running                       |
+| Healthcheck failing for order-service    | `wget` missing (fixed)          | Rebuild image: `docker compose build order-service`                |
+| `port already allocated`                 | Port in use                     | `netstat -ano                                                      | findstr :3001`then`taskkill /PID <pid> /F` |
+| Mongo auth errors                        | Wrong URI or authSource missing | Use `mongodb://admin:password@mongodb:27017/<db>?authSource=admin` |
+| Kong route 404                           | Path mismatch                   | Check `infrastructure/kong.yml` paths and container logs           |
 
 ### Check Docker Engine
+
 ```cmd
 docker info >NUL 2>&1 || echo Docker engine not reachable
 ```
 
 ### Rebuild Only One Service
+
 ```cmd
 docker compose build product-service
 docker compose up -d product-service
 ```
 
 ### View Structured Logs
+
 ```cmd
 docker compose logs -f user-service
 docker compose logs -f product-service
@@ -250,6 +275,7 @@ docker compose logs -f order-service
 ```
 
 ### Metrics Endpoints
+
 ```cmd
 curl http://localhost:3001/metrics | more
 curl http://localhost:3002/metrics | more
@@ -261,6 +287,7 @@ curl http://localhost:3003/metrics | more
 Create a `scripts` folder (not yet committed) and drop these `.cmd` files for convenience.
 
 `scripts\up-all.cmd`
+
 ```cmd
 @echo off
 echo Starting infrastructure...
@@ -276,6 +303,7 @@ exit /b %errorlevel%
 ```
 
 `scripts\down-all.cmd`
+
 ```cmd
 @echo off
 docker compose down
@@ -284,6 +312,7 @@ echo Stacks stopped.
 ```
 
 `scripts\health.cmd`
+
 ```cmd
 @echo off
 for %%U in (3001 3002 3003) do (
