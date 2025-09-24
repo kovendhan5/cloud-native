@@ -2,7 +2,7 @@ FROM golang:1.19-alpine AS builder
 
 WORKDIR /app
 
-# Install git for fetching dependencies
+# Copy go mod files
 COPY go.mod go.sum ./
 
 # Download dependencies
