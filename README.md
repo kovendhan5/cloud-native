@@ -153,7 +153,6 @@ cd services/user-service && npm test
 # Product Service
 cd services/product-service && python -m pytest
 
-# Order Service
 cd services/order-service && go test ./...
 ```
 
