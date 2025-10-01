@@ -48,7 +48,6 @@ func init() {
 	prometheus.MustRegister(httpRequestDuration)
 }
 
-// Order represents an order in the system
 type Order struct {
 	ID          primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	OrderID     string             `json:"order_id" bson:"order_id"`

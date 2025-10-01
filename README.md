@@ -147,10 +147,10 @@ kubectl apply -f k8s/
 ### Unit Tests
 
 ```bash
-# User Service
+
 cd services/user-service && npm test
 
-# Product Service
+
 cd services/product-service && python -m pytest
 
 cd services/order-service && go test ./...
