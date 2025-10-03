@@ -3,6 +3,7 @@
 ## Prerequisites
 
 1. **Docker Desktop** - Must be installed and running
+
    - Download from: https://www.docker.com/products/docker-desktop
    - Start Docker Desktop and wait for it to be ready
 
@@ -21,6 +22,7 @@ start.bat
 ```
 
 This will:
+
 - Start infrastructure (MongoDB, Kong, Prometheus, Grafana, Jaeger, Consul)
 - Wait 10 seconds for infrastructure to be ready
 - Start application services (User, Product, Order)
