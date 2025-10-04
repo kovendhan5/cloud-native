@@ -177,30 +177,8 @@ async def get_products(
         logger.error("Error retrieving products", error=str(e))
         raise HTTPException(status_code=500, detail="Internal server error")
 
-# Search products (must come before /{product_id} to avoid route conflict)
-@app.get("/api/products/search", response_model=List[ProductResponse])
-async def search_products(q: str, skip: int = 0, limit: int = 50):
-    try:
-        query = {
-            "$or": [
-                {"name": {"$regex": q, "$options": "i"}},
-                {"description": {"$regex": q, "$options": "i"}},
-                {"category": {"$regex": q, "$options": "i"}},
-                {"sku": {"$regex": q, "$options": "i"}}
-            ]
-        }
-        
-        products_cursor = collection.find(query).skip(skip).limit(limit)
-        products = await products_cursor.to_list(length=limit)
-        
-        logger.info("Product search performed", query=q, results=len(products))
-        return [product_helper(product) for product in products]
-    except Exception as e:
-        logger.error("Error searching products", query=q, error=str(e))
-        raise HTTPException(status_code=500, detail="Internal server error")
-
 # Get product by ID
-@app.get("/api/products/{product_id}", response_model=ProductResponse])
+@app.get("/api/products/{product_id}", response_model=ProductResponse)
 async def get_product(product_id: str):
     try:
         if not ObjectId.is_valid(product_id):
@@ -296,6 +274,28 @@ async def delete_product(product_id: str, user=Depends(verify_token)):
         raise
     except Exception as e:
         logger.error("Error deleting product", product_id=product_id, error=str(e))
+        raise HTTPException(status_code=500, detail="Internal server error")
+
+# Search products
+@app.get("/api/products/search", response_model=List[ProductResponse])
+async def search_products(q: str, skip: int = 0, limit: int = 50):
+    try:
+        query = {
+            "$or": [
+                {"name": {"$regex": q, "$options": "i"}},
+                {"description": {"$regex": q, "$options": "i"}},
+                {"category": {"$regex": q, "$options": "i"}},
+                {"sku": {"$regex": q, "$options": "i"}}
+            ]
+        }
+        
+        products_cursor = collection.find(query).skip(skip).limit(limit)
+        products = await products_cursor.to_list(length=limit)
+        
+        logger.info("Product search performed", query=q, results=len(products))
+        return [product_helper(product) for product in products]
+    except Exception as e:
+        logger.error("Error searching products", query=q, error=str(e))
         raise HTTPException(status_code=500, detail="Internal server error")
 
 if __name__ == "__main__":
